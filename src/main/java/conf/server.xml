@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<server>
+    <service>
+        <connector port="8080"></connector>
+    </service>
+</server>
