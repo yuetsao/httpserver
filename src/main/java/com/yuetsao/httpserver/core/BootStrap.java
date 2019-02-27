@@ -1,6 +1,5 @@
 package com.yuetsao.httpserver.core;
 
-import com.sun.security.ntlm.Server;
 import com.yuetsao.httpserver.util.Logger;
 
 import java.io.IOException;
@@ -23,8 +22,14 @@ public class BootStrap {
 
         try {
             Logger.log("htttpServer start");
+            long start = System.currentTimeMillis();
+            //获取系统端口号
+            int port = ServerParser.getPort();
+            Logger.log("httpserver-port:" + port);
             //服务器套接字，绑定端口号：8080
-            ServerSocket serverSocket = new ServerSocket(8080);
+            ServerSocket serverSocket = new ServerSocket(port);
+            long end = System.currentTimeMillis();
+            Logger.log("httperServer started : 耗时" + (end-start) + "ms");
         } catch (IOException e) {
             e.printStackTrace();
         }
