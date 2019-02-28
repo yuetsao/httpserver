@@ -16,26 +16,26 @@ public class BootStrap {
      * 主程序
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         //程序入口
         start();
     }
-
-    private static void start() {
+    private static void start() throws Exception{
         ServerSocket serverSocket = null;
         Socket clientSocket = null;
         BufferedReader br =null;
         try {
             Logger.log("htttpServer start");
             long start = System.currentTimeMillis();
+            //解析服务器中的web。xml
+            String [] webAppNames = {"oa"};
+            WebParser.parser(webAppNames);
             //获取系统端口号
             int port = ServerParser.getPort();
             Logger.log("httpserver-port:" + port);
             //服务器套接字，绑定端口号：8080
             serverSocket = new ServerSocket(port);
-
             //接收客户端消息
-
             String temp = null;
             while (true) {
                 clientSocket = serverSocket.accept();
