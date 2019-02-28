@@ -57,21 +57,33 @@ public class HandlerRequest implements Runnable {
                 String urlPattern = servletPath.substring(1+ webapname.length());
                 //获取servletClassName
                 String servletClassName = servletMap.get(urlPattern);
+                //判断该业务处理的Servlet类是否存在
+                if(servletClassName != null) {
+                    //
+                    printWriter.print("HTTP/1.1 200 OK\n");
+                    printWriter.print("Content-Type:text/html;charset=utf-8\n\n");
+                    //通过反射机制创建该业务处理类
+                    try {
+                        //获取封装响应参数对象
+                        ResponseObject responseObject = new ResponseObject();
+                        responseObject.setOut(printWriter);
+                        Class c = Class.forName(servletClassName);
+                        Object object = c.newInstance();
+                        //这个时候，服务器开发人员不知道如何调用servlet业务处理类里的方法了
+                        Servlet servlet = (Servlet)object;
+                        servlet.service(responseObject);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    }
+                }else {
 
-                //通过反射机制创建该业务处理类
-                try {
-                    Class c = Class.forName(servletClassName);
-                    Object object = c.newInstance();
-                    //这个时候，服务器开发人员不知道如何调用servlet业务处理类里的方法了
-                    Servlet servlet = (Servlet)object;
-                    servlet.service();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
                 }
+
+
 
             }
             printWriter.flush();
